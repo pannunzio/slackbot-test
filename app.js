@@ -157,8 +157,8 @@ app.command("/update", async ({ command, ack, say }) => {
 });
 
 (async () => {
-  const port = 5000
+  const port = process.env.PORT || 5000; 
   // Start your app
-  await app.start(process.env.PORT || port);
+  await app.start(port);
   console.log(`⚡️ Slack Bolt app is running on port ${port}!`);
 })();
