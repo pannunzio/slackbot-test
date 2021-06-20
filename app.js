@@ -120,7 +120,7 @@ app.message(/products/, async ({ command, say }) => {
 
 // matches any string that contains the string hey
 app.message(/hey/, async ({ command, say }) => {
-    console.log("test from mariana");
+    console.log("test from mariana hopefully bot3");
     try {
       say("Yaaay! that command works! ⚡️☠️");
     } catch (error) {
@@ -157,7 +157,7 @@ app.command("/update", async ({ command, ack, say }) => {
 });
 
 (async () => {
-  const port = process.env.PORT || 5000; 
+  const port = process.env.PORT || 5000;
   // Start your app
   await app.start(port);
   console.log(`⚡️ Slack Bolt app is running on port ${port}!`);
