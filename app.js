@@ -160,6 +160,7 @@ app.command("/update", async ({ command, ack, say }) => {
 //});
 
 app.event('app_home_opened', ({ event, say }) => {
+    console.log("app home openend!!");
     say(`Hello world, <@${event.user}>!`);
 });
 
