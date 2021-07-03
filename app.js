@@ -158,17 +158,11 @@ app.command("/update", async ({ command, ack, say }) => {
 
 //app.event('app_home_opened', async({event, client, context}) => {
 //});
-app.post('/slack/events', async(req, res) => {
-  const {type, user, channel, tab, text, subtype} = req.body.event;
-
-  if(type === 'app_home_opened') {
-    console.log("app home openend from post!!");
-    say(`From app.post: Hello world, <@${event.user}>!`);
-  }
-});
+//app.post('/slack/events', async(req, res) => {
+//  const {type, user, channel, tab, text, subtype} = req.body.event;
 
 app.event('app_home_opened', ({ event, say }) => {
-    console.log("app home openend!!");
+    console.log("event: " + event);
     //say(`Hello world, <@${event.user}>!`);
 });
 
