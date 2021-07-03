@@ -11,7 +11,7 @@ const fs = require('fs')
 let raw = fs.readFileSync('db.json');
 // parse the raw bytes from the file as JSON
 let faqs= JSON.parse(raw);
-
+const appHome = require('./appHome.js');
 
 
 require("dotenv").config();
@@ -154,6 +154,13 @@ app.command("/update", async ({ command, ack, say }) => {
     console.log("err");
     console.error(error);
   }
+});
+
+//app.event('app_home_opened', async({event, client, context}) => {
+//});
+
+app.event('app_home_opened', ({ event, say }) => {
+    say(`Hello world, <@${event.user}>!`);
 });
 
 (async () => {
