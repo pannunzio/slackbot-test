@@ -165,7 +165,8 @@ app.post('/slack/events', async(req, res) => {
     console.log("app home openend from post!!");
     say(`From app.post: Hello world, <@${event.user}>!`);
   }
-}
+});
+
 app.event('app_home_opened', ({ event, say }) => {
     console.log("app home openend!!");
     //say(`Hello world, <@${event.user}>!`);
