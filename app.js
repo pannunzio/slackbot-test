@@ -12,6 +12,7 @@ let raw = fs.readFileSync('db.json');
 // parse the raw bytes from the file as JSON
 let faqs= JSON.parse(raw);
 const appHome = require('./appHome.js');
+const modals = require('./modalPanel.js');
 
 
 require("dotenv").config();
@@ -156,14 +157,21 @@ app.command("/update", async ({ command, ack, say }) => {
   }
 });
 
-//app.event('app_home_opened', async({event, client, context}) => {
-//});
-//app.post('/slack/events', async(req, res) => {
-//  const {type, user, channel, tab, text, subtype} = req.body.event;
+app.event('app_home_opened', async({event, client, context}) => {
 
-app.event('app_home_opened', ({ event, say }) => {
-    console.log("event: " + event);
-    //say(`Hello world, <@${event.user}>!`);
+  const homeView = appHome.createHome(event, client);
+  if(homeView){
+    console.log('homeView success');
+  }
+});
+
+app.action({ action_id: 'create-project'} , async({ ack, payload, client, body }) => {
+  ack();
+  const modalPanel = modals.createProject(payload, client, body.trigger_id);
+});
+
+app.action({ action_id: 'edit-project'} , async({ack, payload, context}) => {
+  console.log(action);
 });
 
 (async () => {
