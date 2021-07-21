@@ -158,7 +158,7 @@ app.command("/update", async ({ command, ack, say }) => {
 });
 
 app.event('app_home_opened', async({event, client, context}) => {
-
+  console.log('OPENED');
   const homeView = appHome.createHome(event, client);
   if(homeView){
     console.log('homeView success');
@@ -170,8 +170,23 @@ app.action({ action_id: 'create-project'} , async({ ack, payload, client, body }
   const modalPanel = modals.createProject(payload, client, body.trigger_id);
 });
 
-app.action({ action_id: 'edit-project'} , async({ack, payload, context}) => {
-  console.log(action);
+app.view('modal-create-project',  async ({ ack, body, view, client }) => {
+  ack();
+  const data = {
+    title: view['state']['values']['project-title']['title-input']['value'],
+    startDate: view['state']['values']['start-date']['start-date']['selected_date'],
+    endDate: view['state']['values']['end-date']['end-date']['selected_date'],
+    description: view['state']['values']['project-description']['description-input']['value'],
+  }
+});
+
+app.action({ action_id: 'edit-project'} , async({ack, payload, client, body}) => {
+  ack();
+  const modalPanel = modals.editProject(payload, client, body.trigger_id);
+});
+
+app.view('modal-edit-project',  async ({ ack, body, view, client }) => {
+  ack();
 });
 
 (async () => {
