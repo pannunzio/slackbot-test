@@ -1,10 +1,17 @@
 const JsonDB = require('node-json-db').JsonDB;
-
 const app = require('./app.js');
+const fs = require('fs');
 
 const createHome = async(event, client) => {
+  let vInfo = fs.readFileSync('views.json');
+  let uInfo = fs.readFileSync('userInfo.json');
+
+  let view = JSON.parse(vInfo);
+  let user = JSON.parse(uInfo);
+
   const  panels = new JsonDB('views', true, false, '/');
   const  userDb = new JsonDB('userInfo', true, false, '/');
+
   panels.load();
   userDb.load();
 
@@ -12,7 +19,20 @@ const createHome = async(event, client) => {
   let projs = {};
 
   homeView = panels.getData("/HOME");
-  projs = userDb.getData("/"+event.user+"/projects");
+  try {
+    projs = userDb.getData("/"+event.user+"/projects");
+  } catch (e) {
+
+    userDb.push("/"+event.user);
+    userDb.push("/"+event.user+"/projects[]", null);
+    fs.readFile("userInfo.json", function (err, data) {
+      fs.writeFile("userInfo.json", JSON.stringify(userDb), function (err) {
+        if (err) throw err;
+        console.log("Successfully saved to userInfo.json!");
+      });
+    });
+    projs = userDb.getData("/"+event.user+"/projects");
+  }
   //projectView = panels.getData("/PROJ_VIEW");
   console.log(projs.length);
   for (let i = 0; i < projs.length; i++){
@@ -48,6 +68,7 @@ const createHome = async(event, client) => {
 const refreshHome = async(user_id, client) => {
   const  panels = new JsonDB('views', true, false, '/');
   const  userDb = new JsonDB('userInfo', true, false, '/');
+
   panels.load();
   userDb.load();
 

@@ -10,12 +10,12 @@
 const { App } = require("@slack/bolt");
 
 // require the fs module that's built into Node.js
-const fs = require('fs')
 const appHome = require('./appHome.js');
 const modals = require('./modalPanel.js');
 let hasLoadedHome =  false;
 
 require("dotenv").config();
+
 
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,

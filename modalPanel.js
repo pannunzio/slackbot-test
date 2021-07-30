@@ -1,4 +1,5 @@
 const app = require('./app.js');
+const fs = require('fs');
 const JsonDB = require('node-json-db').JsonDB;
 const crypto = require("crypto");
 
@@ -41,6 +42,9 @@ const createProject = async(payload, client, trigger_id) => {
 };
 
 const saveNewProject = async(data) => {
+  let uInfo = fs.readFileSync('userInfo.json');
+  let user = JSON.parse(uInfo);
+
   const userProjs = new JsonDB('userInfo', true, false, '/');
   userProjs.load();
   const newData = {
@@ -51,6 +55,12 @@ const saveNewProject = async(data) => {
     "project_description":data.projectDescription,
   }
   userProjs.push("/"+data.user_id+"/projects[]", newData);
+  fs.readFile("userInfo.json", function (err, data) {
+    fs.writeFile("userInfo.json", JSON.stringify(userProjs), function (err) {
+      if (err) throw err;
+      console.log("Successfully saved to userInfo.json!");
+    });
+  });
   return true;
 }
 
